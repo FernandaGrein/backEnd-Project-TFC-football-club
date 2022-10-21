@@ -1,15 +1,17 @@
-// import { Request, Response } from 'express';
-// import IloginService from '../entities';
+import { Request, Response } from 'express';
+import { IloginService } from '../entities';
 
-// export default class loginController {
-//   private loginService: IloginService;
+export default class LoginController {
+  private loginService: IloginService;
 
-//   constructor(loginService: IloginService) {
-//     this.loginService = loginService;
-//   }
+  constructor(loginService: IloginService) {
+    this.loginService = loginService;
+  }
 
-//   public makeLogin = async (req: Request, res: Response) => {
-//     const { email, password } = req.body;
-//     return res.sendStatus(200);
-//   };
-// }
+  public makeLogin = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    const token = await this.loginService.execute({ email, password });
+    return res.sendStatus(200);
+  };
+}
