@@ -1,5 +1,5 @@
 // import { Request, Response } from 'express';
-// import IloginService from 'src/entities';
+// import IloginService from '../entities';
 
 // export default class loginController {
 //   private loginService: IloginService;
