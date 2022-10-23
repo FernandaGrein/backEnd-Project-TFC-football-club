@@ -2,6 +2,10 @@ export interface IloginService {
   userlogin(user: Ilogin): Promise<string>
 }
 
+export interface IUserRepository {
+  findByEmail(email:string): Promise<IUser | null>
+}
+
 export interface IUser {
   id?: number;
   username: string;
