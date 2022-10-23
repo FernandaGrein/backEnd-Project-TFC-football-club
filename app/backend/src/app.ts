@@ -1,5 +1,7 @@
 import * as express from 'express';
 import userRouter from './routes/loginRoutes';
+import erroMiddleware from './errorsHandler/errorMiddleware';
+import 'express-async-errors';
 
 class App {
   public app: express.Express;
@@ -28,6 +30,7 @@ class App {
 
   private routes(): void {
     this.app.use(userRouter);
+    this.app.use(erroMiddleware);
   }
 
   public start(PORT: string | number):void {
