@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('Teste da rota login', () => {
   /**
    * Exemplo do uso de stubs com tipos
    */
@@ -31,15 +31,31 @@ describe('Seu teste', () => {
   //   (Example.findOne as sinon.SinonStub).restore();
   // })
 
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
+  it('Testa se a rota login foi feita com sucesso, retorna um status 200', async () => {
+    const ResponseHttp = await chai.request(app).post('/login')
+      .send({email: "any_email", password: "any_password"})
 
-  //   expect(...)
-  // });
-
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
+    expect(ResponseHttp.status).to.be.equal(200);
+    expect(ResponseHttp.body).to.be.deep.equal({token: "OK"})
   });
+
+  it('testa quando o campo email não é informado', async () => {
+    const HttpRespose = await chai.request(app).post('/login')
+      .send({password: 'any_password'})
+
+    expect(HttpRespose.status).to.be.equal(400)
+    expect(HttpRespose.body).to.be.deep.equal({ message: "All fields must be filled" })
+  })
+
+  it('testa quando o campo password não é informado', async () => {
+    const HttpRespose = await chai.request(app).post('/login')
+      .send({email: 'any_email'})
+
+    expect(HttpRespose.status).to.be.equal(400)
+    expect(HttpRespose.body).to.be.deep.equal({ message: "All fields must be filled" })
+  })
+
+  // it('Seu sub-teste', () => {
+  //   expect(false).to.be.eq(true);
+  // });
 });

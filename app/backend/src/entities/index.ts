@@ -1,5 +1,5 @@
 export interface IloginService {
-  execute(): string
+  userlogin(user: Ilogin): Promise<string>
 }
 
 export interface IUser {

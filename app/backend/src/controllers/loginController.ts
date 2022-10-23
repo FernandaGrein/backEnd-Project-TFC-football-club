@@ -1,17 +1,25 @@
-// import { Request, Response } from 'express';
-// import { IloginService } from '../entities';
+import { Request, Response } from 'express';
+import LoginService from '../services/loginServices';
+import { IloginService } from '../entities';
 
-// export default class LoginController {
-//   private loginService: IloginService;
+export default class LoginController {
+  private readonly loginService: IloginService;
 
-//   constructor(loginService: IloginService) {
-//     this.loginService = loginService;
-//   }
+  constructor() {
+    this.loginService = new LoginService();
+  }
+  //   constructor(loginService: IloginService) {
+  //     this.loginService = loginService;
+  //   }
 
-//   public makeLogin = async (req: Request, res: Response) => {
-//     const { email, password } = req.body;
+  public async userLogin(req: Request, res: Response): Promise<Response> {
+    const { email, password } = req.body;
 
-//     const token = await this.loginService.execute({ email, password });
-//     return res.sendStatus(200);
-//   };
-// }
+    if (!email || !password) {
+      return res.status(400).json({ message: 'All fields must be filled' });
+    }
+    const token = await this.loginService.userlogin({ email, password });
+
+    return res.status(200).json({ token });
+  }
+}
