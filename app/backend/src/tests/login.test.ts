@@ -7,28 +7,30 @@ import { app } from '../app';
 import user from '../database/models/user';
 
 import { Response } from 'superagent';
+// import UserRepository from '../repository/UserRepository';
+// import { IUserRepository } from '../entities';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 describe('Teste da rota login', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
-
-  // let chaiHttpResponse: Response;
+  let chaiHttpResponse: Response;
 
   // before(async () => {
   //   sinon
-  //     .stub(Example, "findOne")
+  //     .stub(UserRepository, "findByEmail")
   //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
+  //       id: 1,
+  //       username: 'Admin',
+  //       role: 'admin',
+  //       email: 'admin@admin.com',
+  //       password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW'
+  //     } as unknown as IUserRepository);
   // });
 
   // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
+  //   (UserRepository.findByEmail as sinon.SinonStub).restore();
   // })
 
   it('Testa se a rota login foi feita com sucesso, retorna um status 200', async () => {
@@ -67,7 +69,7 @@ describe('Teste da rota login', () => {
       .send({email: "anyemail.com", password: "any_password"})
 
     expect(HttpRespose.status).to.be.equal(400)
-    expect(HttpRespose.body).to.be.deep.equal({ message: "EMAIL ERRADO" })
+    expect(HttpRespose.body).to.be.deep.equal({ message: "\"email\" must be a valid email" })
   })
 
   // it('Seu sub-teste', () => {

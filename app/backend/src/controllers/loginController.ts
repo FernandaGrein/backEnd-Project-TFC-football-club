@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { IloginService, IUser } from '../entities';
+import 'express-async-errors';
 
 export default class LoginController {
   private readonly loginService: IloginService;
