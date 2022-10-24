@@ -1,5 +1,6 @@
 export interface IloginService {
   userlogin(user: Ilogin): Promise<string>
+  validateLogin(token: string): validToken | void
 }
 
 export interface IUserRepository {
@@ -17,4 +18,8 @@ export interface IUser {
 export interface Ilogin {
   email: string,
   password: string
+}
+
+export interface validToken {
+  role: string
 }

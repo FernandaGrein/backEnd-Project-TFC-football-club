@@ -1,6 +1,8 @@
 import jwt, { Secret } from 'jsonwebtoken';
+import { Error } from 'sequelize/types';
+import IncorrectFormat from '../errorsHandler/incorrectFormat';
 import InvalidFields from '../errorsHandler/invalidFieldsError';
-import { Ilogin, IloginService, IUser, IUserRepository } from '../entities';
+import { Ilogin, IloginService, IUser, IUserRepository, validToken } from '../entities';
 import loginSchema from './schemas';
 
 const { JWT_SECRET } = process.env;
@@ -15,7 +17,7 @@ export default class LoginService implements IloginService {
     const { email, password } = userBody;
 
     const validation = loginSchema.validate({ email, password });
-    if (validation.error) throw new InvalidFields(validation.error.message);
+    if (validation.error) throw new IncorrectFormat(validation.error.message);
 
     const user = await this.userRepository.findByEmail(userBody);
 
@@ -31,5 +33,14 @@ export default class LoginService implements IloginService {
   private generateToken = (user: IUser) => {
     const payload = { id: user.id, username: user.username, role: user.role, email: user.email };
     return jwt.sign(payload, JWT_SECRET as Secret);
+  };
+
+  public validateLogin = (token: string): validToken | void => {
+    try {
+      const payload = jwt.verify(token, JWT_SECRET as Secret);
+      return payload.role;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 }

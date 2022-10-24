@@ -18,4 +18,12 @@ export default class LoginController {
 
     return res.status(200).json({ token });
   }
+
+  public validateLogin(req: Request, res: Response): Response {
+    const token = req.headers.authorization;
+
+    const role = this.loginService.validateLogin(token as string);
+
+    return res.status(200).json({ role });
+  }
 }
