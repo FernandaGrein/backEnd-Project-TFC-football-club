@@ -7,13 +7,13 @@ export default class TeamsServices implements ITeamsService {
     this.teamsRepository = teamsRepository;
   }
 
-  findAllTeams(): Promise<ITeams[]> {
-    const teams = this.teamsRepository.findAllTeams();
+  public async findAllTeams(): Promise<ITeams[]> {
+    const teams = await this.teamsRepository.findAllTeams();
     return teams;
   }
 
-  findTeamById(id: number): Promise<ITeams> {
-    const teamById = this.findTeamById(id);
+  public async findTeamById(id: number): Promise<ITeams> {
+    const teamById = await this.teamsRepository.findTeamById(id);
     return teamById;
   }
 }
