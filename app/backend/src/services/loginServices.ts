@@ -20,9 +20,11 @@ export default class LoginService implements IloginService {
 
     const user = await this.userRepository.findByEmail(userBody);
 
-    if (user && user.password !== userBody.password) {
-      throw new InvalidFields('Incorrect email or password');
-    }
+    console.log(user, '--------SERVICE-----');
+
+    // if (user && user.password !== userBody.password) {
+    //   throw new InvalidFields('Incorrect email or password');
+    // }
 
     const token = this.generateToken(user as IUser);
 

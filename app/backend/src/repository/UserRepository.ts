@@ -8,11 +8,11 @@ export default class UserRepository implements IUserRepository {
 
   async findByEmail({ email, password }: Ilogin): Promise<IUser> {
     const userFromDb = await this.model.findOne({ where: { email } });
-    console.log('______', userFromDb);
+    console.log('___REPOSITORY___', userFromDb);
 
     if (!userFromDb) throw new InvalidFields('Incorrect email or password');
 
-    const check = compare(password, userFromDb.password);
+    const check = await compare(password, userFromDb.password);
 
     if (!check) throw new InvalidFields('Incorrect email or password');
 
