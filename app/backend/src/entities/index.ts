@@ -1,6 +1,8 @@
+import { JwtPayload } from 'jsonwebtoken';
+
 export interface IloginService {
   userlogin(user: Ilogin): Promise<string>
-  validateLogin(token: string): validToken | void
+  validateLogin(token: string): JwtPayload | void
 }
 
 export interface IUserRepository {

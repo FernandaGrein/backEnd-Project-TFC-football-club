@@ -1,7 +1,7 @@
-import jwt, { Secret } from 'jsonwebtoken';
+import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import IncorrectFormat from '../errorsHandler/incorrectFormat';
 import InvalidFields from '../errorsHandler/invalidFieldsError';
-import { Ilogin, IloginService, IUser, IUserRepository, validToken } from '../entities';
+import { Ilogin, IloginService, IUser, IUserRepository } from '../entities';
 import loginSchema from './schemas';
 
 const { JWT_SECRET } = process.env;
@@ -34,10 +34,10 @@ export default class LoginService implements IloginService {
     return jwt.sign(payload, JWT_SECRET as Secret);
   };
 
-  public validateLogin = (token: string): validToken | void => {
+  public validateLogin = (token: string): JwtPayload | void => {
     try {
-      const payload = jwt.verify(token, JWT_SECRET as Secret);
-      return payload.role;
+      const payload = jwt.verify(token, JWT_SECRET as Secret) as JwtPayload;
+      return payload;
     } catch (error) {
       throw new InvalidFields('Invalid Token');
     }

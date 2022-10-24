@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { IloginService } from '../entities';
+import { IloginService, IUser } from '../entities';
 
 export default class LoginController {
   private readonly loginService: IloginService;
@@ -22,8 +22,8 @@ export default class LoginController {
   public validateLogin(req: Request, res: Response): Response {
     const token = req.headers.authorization;
 
-    const role = this.loginService.validateLogin(token as string);
+    const payload = this.loginService.validateLogin(token as string) as IUser;
 
-    return res.status(200).json({ role });
+    return res.status(200).json({ role: payload.role });
   }
 }
