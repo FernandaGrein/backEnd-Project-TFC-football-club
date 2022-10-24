@@ -1,6 +1,9 @@
+import jwt, { Secret } from 'jsonwebtoken';
 import InvalidFields from '../errorsHandler/invalidFieldsError';
-import { Ilogin, IloginService, IUserRepository } from '../entities';
+import { Ilogin, IloginService, IUser, IUserRepository } from '../entities';
+import loginSchema from './schemas';
 
+const { JWT_SECRET } = process.env;
 export default class LoginService implements IloginService {
   private readonly userRepository: IUserRepository;
 
@@ -9,12 +12,24 @@ export default class LoginService implements IloginService {
   }
 
   public async userlogin(userBody: Ilogin): Promise<string> {
-    const user = await this.userRepository.findByEmail(userBody.email);
+    const { email, password } = userBody;
+
+    const validation = loginSchema.validate({ email, password });
+    if (validation.error) throw new InvalidFields(validation.error.message);
+
+    const user = await this.userRepository.findByEmail(userBody);
 
     if (user && user.password !== userBody.password) {
       throw new InvalidFields('Incorrect email or password');
     }
 
-    return 'ok';
+    const token = this.generateToken(user as IUser);
+
+    return token;
   }
+
+  private generateToken = (user: IUser) => {
+    const payload = { id: user.id, username: user.username, role: user.role, email: user.email };
+    return jwt.sign(payload, JWT_SECRET as Secret);
+  };
 }

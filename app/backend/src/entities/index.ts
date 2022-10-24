@@ -3,13 +3,14 @@ export interface IloginService {
 }
 
 export interface IUserRepository {
-  findByEmail(email:string): Promise<IUser | null>
+  findByEmail(userBody: Ilogin): Promise<IUser | null>
 }
 
 export interface IUser {
   id?: number;
   username: string;
   email: string;
+  role: string;
   password?: string;
 }
 
