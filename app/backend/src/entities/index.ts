@@ -22,6 +22,17 @@ export interface Ilogin {
   password: string
 }
 
-export interface validToken {
-  role: string
+export interface ITeamsService {
+  findAllTeams(): Promise<ITeams[]>
+  findTeamById(id:number): Promise<ITeams>
+}
+
+export interface ITeamsRepository {
+  findAllTeams(): Promise<ITeams[]>
+  findTeamById(id:number): Promise<ITeams>
+}
+
+export interface ITeams {
+  id: number,
+  teamName: string,
 }

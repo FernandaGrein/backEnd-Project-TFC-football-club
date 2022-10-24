@@ -20,12 +20,6 @@ export default class LoginService implements IloginService {
 
     const user = await this.userRepository.findByEmail(userBody);
 
-    console.log(user, '--------SERVICE-----');
-
-    // if (user && user.password !== userBody.password) {
-    //   throw new InvalidFields('Incorrect email or password');
-    // }
-
     const token = this.generateToken(user as IUser);
 
     return token;
@@ -41,7 +35,7 @@ export default class LoginService implements IloginService {
       const payload = jwt.verify(token, JWT_SECRET as Secret) as JwtPayload;
       return payload;
     } catch (error) {
-      throw new InvalidFields('Invalid Token');
+      throw new InvalidFields('Token must be a valid token');
     }
   };
 }
