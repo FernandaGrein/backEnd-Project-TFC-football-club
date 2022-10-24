@@ -36,3 +36,29 @@ export interface ITeams {
   id: number,
   teamName: string,
 }
+
+export interface IMatchesRepository {
+  finAllMatches(): Promise<void>
+}
+
+export interface IMatchesServices {
+  finAllMatches(): Promise<void>
+}
+
+export interface IMatches extends IMatchesSimple{
+  teamHome: {
+    teamName: string
+  },
+  teamAway: {
+    teamName: string
+  }
+}
+
+export interface IMatchesSimple {
+  id: number,
+  homeTeam: number,
+  homeTeamGoals: number,
+  awayTeam: number,
+  awayTeamGoals: number,
+  inProgress: number,
+}
