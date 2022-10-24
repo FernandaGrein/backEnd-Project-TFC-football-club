@@ -1,5 +1,4 @@
 import jwt, { Secret } from 'jsonwebtoken';
-import { Error } from 'sequelize/types';
 import IncorrectFormat from '../errorsHandler/incorrectFormat';
 import InvalidFields from '../errorsHandler/invalidFieldsError';
 import { Ilogin, IloginService, IUser, IUserRepository, validToken } from '../entities';
@@ -40,7 +39,7 @@ export default class LoginService implements IloginService {
       const payload = jwt.verify(token, JWT_SECRET as Secret);
       return payload.role;
     } catch (error) {
-      throw new Error(error.message);
+      throw new InvalidFields('Invalid Token');
     }
   };
 }
