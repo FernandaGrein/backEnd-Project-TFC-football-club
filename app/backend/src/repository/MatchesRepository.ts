@@ -81,4 +81,21 @@ export default class MatchesRepository implements IMatchesRepository {
     };
     return newMatch;
   }
+
+  public async finishedGame(id:number): Promise<void> {
+    await this.model.update(
+      {
+        inProgress: 0,
+      },
+      { where: { id } },
+    );
+  }
+
+  public async findMacthById(id:number): Promise<IMatchesSimple | null> {
+    const match = await this.model.findOne({
+      where: { id },
+    });
+
+    return match;
+  }
 }

@@ -43,6 +43,8 @@ export interface IMatchesRepository {
   findEndedMatches(): Promise<IMatchesSimple[]>
   createMatchesInProgress({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }
   : IMatchesSimple): Promise<IMatchesSimple>
+  finishedGame(id:number): Promise<void>
+  findMacthById(id:number): Promise<IMatchesSimple | null>
 }
 
 export interface IMatchesServices {
@@ -51,6 +53,7 @@ export interface IMatchesServices {
   findEndedMatches(): Promise<IMatchesSimple[]>
   createMatchesInProgress(token: string, { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }
   : IMatchesSimple): Promise<IMatchesSimple>
+  updateMatches(id: number): Promise<void>
 }
 
 export interface IMatches extends IMatchesSimple{

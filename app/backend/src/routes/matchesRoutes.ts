@@ -11,5 +11,6 @@ const matchesController = new MatchesController(macthesServices);
 
 matchesRouter.get('/matches', (req, res) => matchesController.findAllMatches(req, res));
 matchesRouter.post('/matches', (req, res) => matchesController.createMatchesInProgress(req, res));
+matchesRouter.patch('/matches/:id/finish', (req, res) => matchesController.updateMatches(req, res));
 
 export default matchesRouter;
