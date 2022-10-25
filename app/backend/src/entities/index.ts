@@ -38,11 +38,11 @@ export interface ITeams {
 }
 
 export interface IMatchesRepository {
-  finAllMatches(): Promise<void>
+  finAllMatches(): Promise<IMatchesSimple[]>
 }
 
 export interface IMatchesServices {
-  finAllMatches(): Promise<void>
+  finAllMatches(): Promise<IMatchesSimple[]>
 }
 
 export interface IMatches extends IMatchesSimple{

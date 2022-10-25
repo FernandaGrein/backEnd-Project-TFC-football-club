@@ -1,4 +1,4 @@
-import { IMatchesRepository, IMatchesServices } from '../entities';
+import { IMatchesSimple, IMatchesRepository, IMatchesServices } from '../entities';
 
 export default class MatchesServices implements IMatchesServices {
   private readonly matchesRepository: IMatchesRepository;
@@ -7,7 +7,7 @@ export default class MatchesServices implements IMatchesServices {
     this.matchesRepository = matchesRepository;
   }
 
-  public async finAllMatches(): Promise<void> {
+  public async finAllMatches(): Promise<IMatchesSimple[]> {
     const allMatches = await this.matchesRepository.finAllMatches();
     return allMatches;
   }
