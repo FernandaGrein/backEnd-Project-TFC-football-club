@@ -21,7 +21,6 @@ export default class LoginService implements IloginService {
     const user = await this.userRepository.findByEmail(userBody);
 
     const token = this.generateToken(user as IUser);
-    console.log(token);
 
     return token;
   }

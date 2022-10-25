@@ -12,8 +12,7 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 describe('Teste da rota login', () => {
-
-  beforeEach(async () => {
+  before(async () => {
     sinon
       .stub(Model, 'findOne')
       .resolves({
@@ -28,7 +27,7 @@ describe('Teste da rota login', () => {
       )
   });
 
-  afterEach(()=> sinon.restore())
+  after(()=> sinon.restore())
 
   it('Testa se a rota login foi feita com sucesso, retorna um status 200', async () => {
     const ResponseHttp = await chai.request(app).post('/login')
@@ -70,8 +69,23 @@ describe('Teste da rota login', () => {
     expect(HttpRespose.status).to.be.equal(400)
     expect(HttpRespose.body).to.be.deep.equal({ message: "\"email\" must be a valid email" })
   })
+  describe('testa a rota login/validate', () => {
+    before(async () => {
+        sinon.stub(JsonWebTokenError, 'verify').resolves(
+        { id: 1, username: 'Admin', role: 'admin', email: 'admin@admin.com' }
+      )
+    });
+  
+    after(()=> sinon.restore())
+    it('testa se é validado um token com sucesso', async () => {
+      const response = await chai.request(app).get('/login/validate').send({
+        email: "admin@admin.com", password: "secret_admin"
+      }).set('Authorization', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjY2NzA3NjQ2fQ.K3aWJXLObC-PmaxYqNv2C5Zh4E1bdO3m3CHqNh5MCOM" )
 
-  // it('Seu sub-teste', () => {
-  //   expect(false).to.be.eq(true);
-  // });
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.be.deep.equal({
+        "role": "admin"
+      })
+    })
+  })
 });
