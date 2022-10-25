@@ -21,8 +21,6 @@ export default class MatchesRepository implements IMatchesRepository {
         },
       ],
     });
-
-    console.log('----REPOSITORY-----', allTeams);
     return allTeams;
   }
 }

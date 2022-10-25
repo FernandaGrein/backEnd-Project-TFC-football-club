@@ -21,6 +21,7 @@ export default class UserRepository implements IUserRepository {
       role: userFromDb.role,
       email: userFromDb.email,
     };
+
     return user;
   }
 }

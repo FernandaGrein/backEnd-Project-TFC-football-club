@@ -21,12 +21,14 @@ export default class LoginService implements IloginService {
     const user = await this.userRepository.findByEmail(userBody);
 
     const token = this.generateToken(user as IUser);
+    console.log(token);
 
     return token;
   }
 
   private generateToken = (user: IUser) => {
     const payload = { id: user.id, username: user.username, role: user.role, email: user.email };
+
     return jwt.sign(payload, JWT_SECRET as Secret);
   };
 
