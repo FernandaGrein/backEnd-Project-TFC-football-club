@@ -7,6 +7,7 @@ export default class MatchesRepository implements IMatchesRepository {
 
   public async finAllMatches(): Promise<void> {
     const allTeams = await this.model.findAll({
+      raw: true,
       include: [
         {
           model: Team,

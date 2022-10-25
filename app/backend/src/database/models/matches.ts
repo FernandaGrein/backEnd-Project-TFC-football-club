@@ -1,4 +1,4 @@
-import { Model, INTEGER, STRING } from 'sequelize';
+import { Model, INTEGER, BOOLEAN } from 'sequelize';
 import db from '.';
 import Team from './team';
 
@@ -18,13 +18,22 @@ Matches.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  teamName: {
-    type: STRING,
-    allowNull: false,
+  homeTeam: {
+    type: INTEGER,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
   },
+  awayTeam: {
+    type: INTEGER,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  },
+  homeTeamGoals: INTEGER,
+  awayTeamGoals: INTEGER,
+  inProgress: BOOLEAN,
 }, {
   sequelize: db,
-  modelName: 'match',
+  // modelName: 'match',
   timestamps: false,
   underscored: true,
 });
