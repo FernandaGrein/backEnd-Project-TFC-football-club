@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { IloginService, IUser } from '../entities';
+import InvalidFields from '../errorsHandler/invalidFieldsError';
 import 'express-async-errors';
 
 export default class LoginController {
@@ -23,7 +24,9 @@ export default class LoginController {
   public validateLogin(req: Request, res: Response): Response {
     const token = req.headers.authorization;
 
-    const payload = this.loginService.validateLogin(token as string) as IUser;
+    if (!token) throw new InvalidFields('token not found');
+
+    const payload = this.loginService.validateLogin(token) as IUser;
 
     return res.status(200).json({ role: payload.role });
   }

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import InvalidFields from '../errorsHandler/invalidFieldsError';
 import { IMatchesServices } from '../entities';
 
 export default class MatchesController {
@@ -23,5 +24,16 @@ export default class MatchesController {
 
     const allMatches = await this.matchesServices.finAllMatches();
     return res.status(200).json(allMatches);
+  }
+
+  public async createMatchesInProgress(req: Request, res: Response): Promise<Response> {
+    const matchBody = req.body;
+    const token = req.headers.authorization;
+
+    if (!token) throw new InvalidFields('Token not Found');
+
+    const newMatch = await this.matchesServices.createMatchesInProgress(token, matchBody);
+
+    return res.status(201).json(newMatch);
   }
 }

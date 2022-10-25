@@ -37,6 +37,7 @@ export default class MatchesServices implements IMatchesServices {
     await TeamsRepository.findTeamById(mactheBody.homeTeam);
 
     const newMatch = await this.matchesRepository.createMatchesInProgress(mactheBody);
+
     return newMatch;
   }
 }

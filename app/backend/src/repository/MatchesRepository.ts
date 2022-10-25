@@ -68,19 +68,17 @@ export default class MatchesRepository implements IMatchesRepository {
       awayTeam,
       homeTeamGoals,
       awayTeamGoals,
+      inProgress: 1,
     });
-
-    console.log('--------', dataValues);
 
     const newMatch = {
       id: dataValues.id,
       homeTeam,
-      awayTeam,
       homeTeamGoals,
+      awayTeam,
       awayTeamGoals,
       inProgress: true,
     };
-
     return newMatch;
   }
 }
