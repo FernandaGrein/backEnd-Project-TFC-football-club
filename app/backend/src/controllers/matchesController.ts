@@ -44,4 +44,14 @@ export default class MatchesController {
     await this.matchesServices.updateMatches(numberId);
     return res.status(200).json({ message: 'Finished' });
   }
+
+  public async updateMatchesInProgress(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const goalsMatch = req.body;
+    const numberId = Number(id);
+
+    await this.matchesServices.updateMatchesGoals(numberId, goalsMatch);
+
+    return res.status(200).json({ message: 'Updated' });
+  }
 }

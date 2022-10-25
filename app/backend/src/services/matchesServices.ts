@@ -1,7 +1,7 @@
 import NotFoundId from '../errorsHandler/notFoundId';
 import EqualFieldsError from '../errorsHandler/equalFieldsError';
 import TeamsRepository from '../repository/TeamsRepository';
-import { IMatchesSimple, IMatchesRepository, IMatchesServices } from '../entities';
+import { IMatchesSimple, IMatchesRepository, IMatchesServices, IPlacar } from '../entities';
 import tokenValidation from './validations';
 
 export default class MatchesServices implements IMatchesServices {
@@ -43,10 +43,20 @@ export default class MatchesServices implements IMatchesServices {
   }
 
   public async updateMatches(id: number): Promise<void> {
+    await this.findMatchById(id);
+
+    await this.matchesRepository.finishedGame(id);
+  }
+
+  public async updateMatchesGoals(id: number, goalsBody: IPlacar): Promise<void> {
+    await this.findMatchById(id);
+
+    await this.matchesRepository.updateMatchesInProgres(id, goalsBody);
+  }
+
+  private async findMatchById(id:number): Promise<void> {
     const findMatch = this.matchesRepository.findMacthById(id);
 
     if (!findMatch) throw new NotFoundId('Match not found');
-
-    await this.matchesRepository.finishedGame(id);
   }
 }

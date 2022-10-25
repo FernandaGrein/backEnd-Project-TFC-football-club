@@ -1,5 +1,5 @@
 import Team from '../database/models/team';
-import { IMatchesSimple, IMatchesRepository } from '../entities';
+import { IMatchesSimple, IMatchesRepository, IPlacar } from '../entities';
 import Matches from '../database/models/matches';
 
 export default class MatchesRepository implements IMatchesRepository {
@@ -97,5 +97,15 @@ export default class MatchesRepository implements IMatchesRepository {
     });
 
     return match;
+  }
+
+  public async updateMatchesInProgres(id: number, { homeTeamGoals, awayTeamGoals }
+  : IPlacar): Promise<void> {
+    await this.model.update({
+      homeTeamGoals,
+      awayTeamGoals,
+    }, {
+      where: { id },
+    });
   }
 }

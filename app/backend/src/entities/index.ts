@@ -45,6 +45,7 @@ export interface IMatchesRepository {
   : IMatchesSimple): Promise<IMatchesSimple>
   finishedGame(id:number): Promise<void>
   findMacthById(id:number): Promise<IMatchesSimple | null>
+  updateMatchesInProgres(id: number, { homeTeamGoals, awayTeamGoals }: IPlacar): Promise<void>
 }
 
 export interface IMatchesServices {
@@ -54,6 +55,7 @@ export interface IMatchesServices {
   createMatchesInProgress(token: string, { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }
   : IMatchesSimple): Promise<IMatchesSimple>
   updateMatches(id: number): Promise<void>
+  updateMatchesGoals(id: number, goalsBody: IPlacar): Promise<void>
 }
 
 export interface IMatches extends IMatchesSimple{
@@ -72,4 +74,9 @@ export interface IMatchesSimple {
   awayTeam: number,
   awayTeamGoals: number,
   inProgress?: number | boolean,
+}
+
+export interface IPlacar {
+  homeTeamGoals: number,
+  awayTeamGoals: number,
 }
