@@ -29,7 +29,7 @@ export interface ITeamsService {
 
 export interface ITeamsRepository {
   findAllTeams(): Promise<ITeams[]>
-  findTeamById(id:number): Promise<ITeams>
+
 }
 
 export interface ITeams {
@@ -41,12 +41,16 @@ export interface IMatchesRepository {
   finAllMatches(): Promise<IMatchesSimple[]>
   findInProgessMatches(): Promise<IMatchesSimple[]>
   findEndedMatches(): Promise<IMatchesSimple[]>
+  createMatchesInProgress({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }
+  : IMatchesSimple): Promise<IMatchesSimple>
 }
 
 export interface IMatchesServices {
   finAllMatches(): Promise<IMatchesSimple[]>
   findInProgessMatches(): Promise<IMatchesSimple[]>
   findEndedMatches(): Promise<IMatchesSimple[]>
+  createMatchesInProgress(token: string, { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }
+  : IMatchesSimple): Promise<IMatchesSimple>
 }
 
 export interface IMatches extends IMatchesSimple{
@@ -59,10 +63,10 @@ export interface IMatches extends IMatchesSimple{
 }
 
 export interface IMatchesSimple {
-  id: number,
+  id?: number,
   homeTeam: number,
   homeTeamGoals: number,
   awayTeam: number,
   awayTeamGoals: number,
-  inProgress: number,
+  inProgress?: number | boolean,
 }

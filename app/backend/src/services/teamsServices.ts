@@ -1,3 +1,4 @@
+import TeamsRepository from '../repository/TeamsRepository';
 import { ITeams, ITeamsRepository, ITeamsService } from '../entities';
 
 export default class TeamsServices implements ITeamsService {
@@ -12,8 +13,8 @@ export default class TeamsServices implements ITeamsService {
     return teams;
   }
 
-  public async findTeamById(id: number): Promise<ITeams> {
-    const teamById = await this.teamsRepository.findTeamById(id);
+  public findTeamById = async (id: number): Promise<ITeams> => {
+    const teamById = await TeamsRepository.findTeamById(id);
     return teamById;
-  }
+  };
 }

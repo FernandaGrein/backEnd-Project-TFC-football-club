@@ -5,8 +5,8 @@ import { ITeams, ITeamsRepository } from '../entities';
 export default class TeamsRepository implements ITeamsRepository {
   private readonly model = Team;
 
-  public async findTeamById(id: number): Promise<ITeams> {
-    const teamById = await this.model.findOne({ where: { id } });
+  static async findTeamById(id: number): Promise<ITeams> {
+    const teamById = await Team.findOne({ where: { id } });
 
     if (!teamById) throw new NotFoundId('There is no team with such id!');
 

@@ -60,4 +60,27 @@ export default class MatchesRepository implements IMatchesRepository {
     });
     return endedMatches;
   }
+
+  public async createMatchesInProgress({ homeTeam, awayTeam, homeTeamGoals,
+    awayTeamGoals }: IMatchesSimple): Promise<IMatchesSimple> {
+    const dataValues = await this.model.create({
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+    });
+
+    console.log('--------', dataValues);
+
+    const newMatch = {
+      id: dataValues.id,
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress: true,
+    };
+
+    return newMatch;
+  }
 }
