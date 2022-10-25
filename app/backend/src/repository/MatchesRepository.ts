@@ -22,4 +22,42 @@ export default class MatchesRepository implements IMatchesRepository {
     });
     return allTeams;
   }
+
+  public async findInProgessMatches(): Promise<IMatchesSimple[]> {
+    const matchesInProgress = await this.model.findAll({
+      where: { inProgress: true },
+      include: [
+        {
+          model: Team,
+          as: 'teamHome',
+          attributes: { exclude: ['id'] },
+        },
+        {
+          model: Team,
+          as: 'teamAway',
+          attributes: { exclude: ['id'] },
+        },
+      ],
+    });
+    return matchesInProgress;
+  }
+
+  public async findEndedMatches(): Promise<IMatchesSimple[]> {
+    const endedMatches = await this.model.findAll({
+      where: { inProgress: false },
+      include: [
+        {
+          model: Team,
+          as: 'teamHome',
+          attributes: { exclude: ['id'] },
+        },
+        {
+          model: Team,
+          as: 'teamAway',
+          attributes: { exclude: ['id'] },
+        },
+      ],
+    });
+    return endedMatches;
+  }
 }

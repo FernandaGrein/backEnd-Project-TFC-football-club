@@ -39,10 +39,14 @@ export interface ITeams {
 
 export interface IMatchesRepository {
   finAllMatches(): Promise<IMatchesSimple[]>
+  findInProgessMatches(): Promise<IMatchesSimple[]>
+  findEndedMatches(): Promise<IMatchesSimple[]>
 }
 
 export interface IMatchesServices {
   finAllMatches(): Promise<IMatchesSimple[]>
+  findInProgessMatches(): Promise<IMatchesSimple[]>
+  findEndedMatches(): Promise<IMatchesSimple[]>
 }
 
 export interface IMatches extends IMatchesSimple{

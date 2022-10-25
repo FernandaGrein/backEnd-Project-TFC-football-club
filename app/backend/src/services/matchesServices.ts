@@ -11,4 +11,14 @@ export default class MatchesServices implements IMatchesServices {
     const allMatches = await this.matchesRepository.finAllMatches();
     return allMatches;
   }
+
+  public async findInProgessMatches(): Promise<IMatchesSimple[]> {
+    const matchesInsProgress = await this.matchesRepository.findInProgessMatches();
+    return matchesInsProgress;
+  }
+
+  public async findEndedMatches(): Promise<IMatchesSimple[]> {
+    const endesMatches = await this.matchesRepository.findEndedMatches();
+    return endesMatches;
+  }
 }
