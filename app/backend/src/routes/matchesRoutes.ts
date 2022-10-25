@@ -10,7 +10,7 @@ const macthesServices = new MatchesServices(matchesRepository);
 const matchesController = new MatchesController(macthesServices);
 
 matchesRouter.get('/matches', (req, res) => matchesController.findAllMatches(req, res));
-matchesRouter.get('/matches/matches', (req, res) => matchesController
-  .findMacthesInProgress(req, res));
+// matchesRouter.get('/matches', (req, res) => matchesController
+//   .findMacthesInProgress(req, res));
 
 export default matchesRouter;
