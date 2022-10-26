@@ -11,4 +11,9 @@ export default class LeaderboardService implements ILeaderBoardService {
     const board = await this.repository.getLeaderBoardHome();
     return board;
   }
+
+  public async getLeaderBoardAway(): Promise<unknown[]> {
+    const awayBoard = await this.repository.getLeaderBoardAway();
+    return awayBoard;
+  }
 }
