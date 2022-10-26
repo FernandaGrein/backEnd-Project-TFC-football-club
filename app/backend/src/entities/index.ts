@@ -95,5 +95,9 @@ export interface ILeaderBoard {
 }
 
 export interface ILeaderBoardRep {
-  getLeaderBoardHome(): Promise<ILeaderBoard[]>
+  getLeaderBoardHome(): Promise<unknown[]>
+}
+
+export interface ILeaderBoardService {
+  getLeaderBoardHome(): Promise<unknown[]>
 }
