@@ -13,5 +13,6 @@ leaderBoardRouter.get('/leaderboard/home', (req, res) => leaderBoardCont
   .getLeaderBoardHome(req, res));
 leaderBoardRouter.get('/leaderboard/away', (req, res) => leaderBoardCont
   .getLeaderBoardAway(req, res));
+leaderBoardRouter.get('/leaderboard', (req, res) => leaderBoardCont.getGeneralBoard(req, res));
 
 export default leaderBoardRouter;
