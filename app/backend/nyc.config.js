@@ -6,7 +6,8 @@ module.exports = {
     'src/database/config',
     'src/database/migrations',
     'src/database/seeders',
-    'src/server'
+    'src/server.ts',
+    'src/app.ts'
   ],
   include: ['src/**/*.ts']
 };

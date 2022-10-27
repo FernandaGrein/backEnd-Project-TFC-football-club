@@ -5,7 +5,6 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 
-import { Response } from 'superagent';
 import { Model } from 'sequelize';
 import  JsonWebToken  from 'jsonwebtoken';
 import { allGames, createdMatch, endedGames, gamesInProgress, token } from './mocks';
