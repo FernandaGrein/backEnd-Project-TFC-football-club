@@ -14,7 +14,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Testa a rota /Matche', () => {
+describe('Testa a rota /Matches, busca e criação de jogos', () => {
   describe ('testa a rota /matches findAll', () => {
     before(async () => {
       sinon

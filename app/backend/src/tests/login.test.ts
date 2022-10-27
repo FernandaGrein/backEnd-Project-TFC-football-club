@@ -88,17 +88,5 @@ describe('Teste da rota login', () => {
       })
     })
   })
-  // describe('testa quando é lançado um erro 500', () => {
-  //   before(async () => sinon.stub(LoginService, 'validateLogin' as any).throws());
-    
-  //   after(()=> sinon.restore())
-  //   it('testa se ao lançar um erro sem Status ele é capturado pelo middleware de erros', async () => {
-  //     const response = await chai.request(app).get('/login/validate').send({
-  //       email: "admin@admin.com", password: "secret_admin"
-  //     }).set('Authorization', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjY2NzA3NjQ2fQ.K3aWJXLObC-PmaxYqNv2C5Zh4E1bdO3m3CHqNh5MCOM" )
-  
-  //     expect(response.status).to.be.equal(500);
-  //     expect(response.body).to.be.deep.equal({  })
-  //   })
-  // })
+
 });

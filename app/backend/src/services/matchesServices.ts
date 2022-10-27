@@ -55,7 +55,7 @@ export default class MatchesServices implements IMatchesServices {
   }
 
   private async findMatchById(id:number): Promise<void> {
-    const findMatch = this.matchesRepository.findMacthById(id);
+    const findMatch = await this.matchesRepository.findMacthById(id);
 
     if (!findMatch) throw new NotFoundId('Match not found');
   }
