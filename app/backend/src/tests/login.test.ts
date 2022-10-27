@@ -6,6 +6,7 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 import { Model } from 'sequelize';
 import  JsonWebToken  from 'jsonwebtoken';
+import { tokenMock, userMock } from './mocks';
 
 chai.use(chaiHttp);
 
@@ -15,16 +16,8 @@ describe('Teste da rota login', () => {
   before(async () => {
     sinon
       .stub(Model, 'findOne')
-      .resolves({
-        id: 1,
-        username: 'Admin',
-        role: 'admin',
-        email: 'admin@admin.com',
-        password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW'
-      } as unknown as any);
-      sinon.stub(JsonWebToken, 'sign').resolves(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjY2NzA3NjQ2fQ.K3aWJXLObC-PmaxYqNv2C5Zh4E1bdO3m3CHqNh5MCOM"
-      )
+      .resolves(userMock as unknown as any);
+      sinon.stub(JsonWebToken, 'sign').resolves(tokenMock)
   });
 
   after(()=> sinon.restore())
@@ -34,9 +27,7 @@ describe('Teste da rota login', () => {
       .send({email: "admin@admin.com", password: "secret_admin"})
     
     expect(ResponseHttp.status).to.be.equal(200);
-    expect(ResponseHttp.body).to.be.deep.equal({
-      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjY2NzA3NjQ2fQ.K3aWJXLObC-PmaxYqNv2C5Zh4E1bdO3m3CHqNh5MCOM"
-    })
+    expect(ResponseHttp.body).to.be.deep.equal({ token: tokenMock })
   });
 
   it('testa quando o campo email não é informado', async () => {
@@ -78,7 +69,7 @@ describe('Teste da rota login', () => {
     it('testa se é validado um token com sucesso', async () => {
       const response = await chai.request(app).get('/login/validate').send({
         email: "admin@admin.com", password: "secret_admin"
-      }).set('Authorization', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjY2NzA3NjQ2fQ.K3aWJXLObC-PmaxYqNv2C5Zh4E1bdO3m3CHqNh5MCOM" )
+      }).set('Authorization', tokenMock )
 
       expect(response.status).to.be.equal(200);
       expect(response.body).to.be.deep.equal({

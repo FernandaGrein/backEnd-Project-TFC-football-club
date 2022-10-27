@@ -4,42 +4,65 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
 
 import { Response } from 'superagent';
+import { Model } from 'sequelize';
+import { allGames, endedGames, gamesInProgress } from './mocks';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
+describe('Testa a rota /Matche', () => {
+  describe ('testa a rota /matches findAll', () => {
+    before(async () => {
+      sinon
+        .stub(Model, "findAll")
+        .resolves(allGames as any);
+    });
 
-  // let chaiHttpResponse: Response;
+    after(()=> sinon.restore())
 
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
+    it('testa se ao passar a rota /matches sem parâmetros é retornado um array com todos os jogos', async () => {
+      const HttpResponse = await chai.request(app).get('/matches')
 
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
+      expect(HttpResponse.status).to.be.equal(200);
+      expect(HttpResponse.body).to.be.deep.equal(allGames)
+    });
+  })
 
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
+  describe ('testa a rota /matches jogos em andamento findAll', () => {
+    before(async () => {
+      sinon
+        .stub(Model, "findAll")
+        .resolves(gamesInProgress as any);
+    });
 
-  //   expect(...)
-  // });
+    after(()=> sinon.restore())
 
-  // it('Seu sub-teste', () => {
-  //   expect(false).to.be.eq(true);
-  // });
+    it('testa se ao passar a rota /matches sem parâmetros é retornado um array com todos os jogos', async () => {
+      const HttpResponse = await chai.request(app).get('/matches?inProgress=true')
+
+      expect(HttpResponse.status).to.be.equal(200);
+      expect(HttpResponse.body).to.be.deep.equal(gamesInProgress)
+    });
+  })
+
+  describe ('testa a rota /matches jogos finalizados', () => {
+    before(async () => {
+      sinon
+        .stub(Model, "findAll")
+        .resolves(endedGames as any);
+    });
+
+    after(()=> sinon.restore())
+
+    it('testa se ao passar a rota /matches sem parâmetros é retornado um array com todos os jogos', async () => {
+      const HttpResponse = await chai.request(app).get('/matches?inProgress=false')
+
+      expect(HttpResponse.status).to.be.equal(200);
+      expect(HttpResponse.body).to.be.deep.equal(endedGames)
+    });
+  })
+ 
 });
