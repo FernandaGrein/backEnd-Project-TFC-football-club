@@ -7,7 +7,8 @@ import { app } from '../app';
 
 import { Response } from 'superagent';
 import { Model } from 'sequelize';
-import { allGames, endedGames, gamesInProgress } from './mocks';
+import  JsonWebToken  from 'jsonwebtoken';
+import { allGames, createdMatch, endedGames, gamesInProgress, token } from './mocks';
 
 chai.use(chaiHttp);
 
@@ -64,5 +65,57 @@ describe('Testa a rota /Matche', () => {
       expect(HttpResponse.body).to.be.deep.equal(endedGames)
     });
   })
- 
+
+  describe('testa a criação de jogos em progresso na rota /matches', () => {
+    before(async () => {
+      sinon
+        .stub(Model, "create")
+        .resolves(createdMatch as any);
+      sinon.stub(JsonWebToken, 'verify').returns(
+         { id: 1, username: 'Admin', role: 'admin', email: 'admin@admin.com' } as any
+      )
+    });
+  
+    after(()=> sinon.restore())
+
+    it('testa se é possível criar um jogo com sucesso', async () => {
+      const response = await chai.request(app).post('/matches').send({
+        homeTeam: 16, awayTeam: 8,  homeTeamGoals: 2, awayTeamGoals: 2, 
+      }).set('Authorization', token )
+      
+      expect(response.status).to.be.equal(201);
+      expect(response.body).to.be.deep.equal(createdMatch)
+    })
+
+    it('testa se a ausência de um token retorna um erro', async () => {
+      const response = await chai.request(app).post('/matches').send({
+        homeTeam: 16, awayTeam: 8,  homeTeamGoals: 2, awayTeamGoals: 2, 
+      }).set('Authorization', "" )
+        
+      expect(response.status).to.be.equal(401);
+      expect(response.body).to.be.deep.equal({"message": "Token not Found"})
+    })
+
+    it('testa não é possível criar um jogo com o mesmo time como homeTeam eawayTeam', async () => {
+      const response = await chai.request(app).post('/matches').send({
+        homeTeam: 8, awayTeam: 8,  homeTeamGoals: 2, awayTeamGoals: 2, 
+      }).set('Authorization', token )
+        
+      expect(response.status).to.be.equal(422);
+      expect(response.body).to.be.deep.equal({
+        message: 'It is not possible to create a match with two equal teams'
+      })
+    })
+    
+    it('testa não é possível criar um jogo com um id inexistente', async () => {
+      const response = await chai.request(app).post('/matches').send({
+        homeTeam: 999999, awayTeam: 8,  homeTeamGoals: 2, awayTeamGoals: 2, 
+      }).set('Authorization', token )
+          
+      expect(response.status).to.be.equal(404);
+      expect(response.body).to.be.deep.equal({
+        message: 'There is no team with such id!'
+      })
+    })
+  })
 });
