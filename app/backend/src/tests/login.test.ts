@@ -5,7 +5,7 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import { Model } from 'sequelize';
-import  JsonWebTokenError  from 'jsonwebtoken';
+import  JsonWebToken  from 'jsonwebtoken';
 
 chai.use(chaiHttp);
 
@@ -22,7 +22,7 @@ describe('Teste da rota login', () => {
         email: 'admin@admin.com',
         password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW'
       } as unknown as any);
-      sinon.stub(JsonWebTokenError, 'sign').resolves(
+      sinon.stub(JsonWebToken, 'sign').resolves(
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjY2NzA3NjQ2fQ.K3aWJXLObC-PmaxYqNv2C5Zh4E1bdO3m3CHqNh5MCOM"
       )
   });
@@ -70,11 +70,9 @@ describe('Teste da rota login', () => {
     expect(HttpRespose.body).to.be.deep.equal({ message: "\"email\" must be a valid email" })
   })
   describe('testa a rota login/validate', () => {
-    before(async () => {
-        sinon.stub(JsonWebTokenError, 'verify').resolves(
-        { id: 1, username: 'Admin', role: 'admin', email: 'admin@admin.com' }
-      )
-    });
+    before(async () => sinon.stub(JsonWebToken, 'verify').returns(
+      { id: 1, username: 'Admin', role: 'admin', email: 'admin@admin.com' } as any
+    ));
   
     after(()=> sinon.restore())
     it('testa se é validado um token com sucesso', async () => {
@@ -87,5 +85,29 @@ describe('Teste da rota login', () => {
         "role": "admin"
       })
     })
+
+    it('testa se quando não é passado um token, um erro é lançado', async () => {
+      const response = await chai.request(app).get('/login/validate').send({
+        email: "admin@admin.com", password: "secret_admin"
+      }).set('Authorization', " " )
+
+      expect(response.status).to.be.equal(401);
+      expect(response.body).to.be.deep.equal({
+        "message": "token not found"
+      })
+    })
   })
+  // describe('testa quando é lançado um erro 500', () => {
+  //   before(async () => sinon.stub(LoginService, 'validateLogin' as any).throws());
+    
+  //   after(()=> sinon.restore())
+  //   it('testa se ao lançar um erro sem Status ele é capturado pelo middleware de erros', async () => {
+  //     const response = await chai.request(app).get('/login/validate').send({
+  //       email: "admin@admin.com", password: "secret_admin"
+  //     }).set('Authorization', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjY2NzA3NjQ2fQ.K3aWJXLObC-PmaxYqNv2C5Zh4E1bdO3m3CHqNh5MCOM" )
+  
+  //     expect(response.status).to.be.equal(500);
+  //     expect(response.body).to.be.deep.equal({  })
+  //   })
+  // })
 });
