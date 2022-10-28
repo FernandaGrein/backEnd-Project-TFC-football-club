@@ -1,4 +1,4 @@
-import NotFoundId from '../errorsHandler/notFoundId';
+import NotFoundId from '../errorsHandler/notFoundError';
 import Team from '../database/models/team';
 import { ITeams, ITeamsRepository } from '../entities';
 

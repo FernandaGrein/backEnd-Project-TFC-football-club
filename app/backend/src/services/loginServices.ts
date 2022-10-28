@@ -1,5 +1,5 @@
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
-import IncorrectFormat from '../errorsHandler/incorrectFormat';
+import IncorrectFormat from '../errorsHandler/incorrectFormatError';
 import { Ilogin, IloginService, IUser, IUserRepository } from '../entities';
 import loginSchema from './schemas';
 import tokenValidation from './validations';

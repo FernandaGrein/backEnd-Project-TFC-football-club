@@ -1,4 +1,4 @@
-import NotFoundId from '../errorsHandler/notFoundId';
+import NotFoundId from '../errorsHandler/notFoundError';
 import EqualFieldsError from '../errorsHandler/equalFieldsError';
 import TeamsRepository from '../repository/TeamsRepository';
 import { IMatchesSimple, IMatchesRepository, IMatchesServices, IPlacar } from '../entities';
